@@ -11,12 +11,12 @@ using System.Web.Mvc;
 
 namespace TestProject.UnitTests
 {
-    public class TestClass
+    public class TestClassForCUDController
     {
         private CRUDController testController;
         private IBlogRepository fakeBlogList;
 
-        public TestClass()
+        public TestClassForCUDController()
         {
             fakeBlogList = A.Fake<IBlogRepository>();
             testController = new CRUDController(fakeBlogList);

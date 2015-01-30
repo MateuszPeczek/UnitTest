@@ -137,7 +137,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\BlogRepository.cs" />
     <Compile Include="Repository\IBlogRepository.cs" />
-    <Compile Include="UnitTests\TestClass.cs" />
+    <Compile Include="UnitTests\TestClassForBlogRepository.cs" />
+    <Compile Include="UnitTests\TestClassForCUDController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
