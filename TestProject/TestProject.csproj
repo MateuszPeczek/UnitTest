@@ -138,7 +138,7 @@
     <Compile Include="Repository\BlogRepository.cs" />
     <Compile Include="Repository\IBlogRepository.cs" />
     <Compile Include="UnitTests\TestClassForBlogRepository.cs" />
-    <Compile Include="UnitTests\TestClassForCUDController.cs" />
+    <Compile Include="UnitTests\TestClassForCRUDController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />

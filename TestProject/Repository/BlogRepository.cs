@@ -31,10 +31,8 @@ namespace TestProject.Repository
             return _db.BlogPosts.Find(id);
         }
 
-        [HttpPost]
         public void Create(BlogPost obj)
         {
-            if (obj != null)
             _db.BlogPosts.Add(obj);
         }
 

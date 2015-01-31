@@ -20,6 +20,6 @@ namespace TestProject.Models
 
     public class BlogPostDbContext : DbContext
     {
-        public DbSet<BlogPost> BlogPosts { get; set; }
+        public virtual DbSet<BlogPost> BlogPosts { get; set; }
     }
 }
