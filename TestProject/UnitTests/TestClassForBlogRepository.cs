@@ -26,6 +26,29 @@ namespace TestProject.UnitTests
         [Fact]
         private void Repository_SelectAll_Test()
         {
+            var data = new List<BlogPost>
+            {
+                new BlogPost {ID = 1, Title="Title1", Content="Content1"},
+                new BlogPost {ID = 2, Title="Title2", Content="Content2"},
+                new BlogPost {ID = 2, Title="Title3", Content="Content3"}
+            }.AsEnumerable();
+
+            var fakeDbSet = A.Fake<DbSet<BlogPost>>();
+
+            
+
+            //A.CallTo(() => ((IQueryable<BlogPost>)fakeDbSet).Provider).Returns(data.Provider);
+            //A.CallTo(() => ((IQueryable<BlogPost>)fakeDbSet).Expression).Returns(data.Expression);
+            //A.CallTo(() => ((IQueryable<BlogPost>)fakeDbSet).ElementType).Returns(data.ElementType);
+            A.CallTo(() => ((IQueryable<BlogPost>)fakeDbSet).GetEnumerator()).Returns(data.GetEnumerator());
+
+            var fakeDbContext = A.Fake<BlogPostDbContext>();
+            A.CallTo(() => fakeDbContext.BlogPosts).Returns(fakeDbSet);
+
+            fakeRepository = new BlogRepository(fakeDbContext);
+            var listBlog = fakeRepository.SelectAll();
+
+            //Assert.Equal("Title1", listBlog);
 
         }
 
