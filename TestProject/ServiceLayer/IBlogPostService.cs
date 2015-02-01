@@ -9,6 +9,6 @@ namespace TestProject.ServiceLayer
 {
     public interface IBlogPostService : IEntityService<BlogPost>
     {
-        BlogPost GetById(int Id);
+        BlogPost GetById(int? Id);
     }
 }

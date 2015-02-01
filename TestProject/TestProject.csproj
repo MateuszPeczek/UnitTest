@@ -162,12 +162,12 @@
     <Compile Include="ServiceLayer\IBlogPostService.cs" />
     <Compile Include="ServiceLayer\IEntityService.cs" />
     <Compile Include="ServiceLayer\IService.cs" />
+    <Compile Include="UnitTests\TestClassForServiceLayer.cs" />
     <Compile Include="UOW\IUnitOfWork.cs" />
     <Compile Include="UOW\UnitOfWork.cs" />
-    <Compile Include="UnitTests\TestClassForBlogRepository.cs" />
     <Compile Include="UnitTests\TestClassForCRUDController.cs" />
     <Compile Include="UnitTests\TestDbContext.cs" />
-    <Compile Include="UnitTests\TestEffort.cs" />
+    <Compile Include="UnitTests\TestClassForBlogRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />

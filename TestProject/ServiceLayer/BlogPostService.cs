@@ -19,7 +19,7 @@ namespace TestProject.ServiceLayer
             _blogRepository = blogRepository;
         }
 
-        public BlogPost GetById(int Id)
+        public BlogPost GetById(int? Id)
         {
             return _blogRepository.SelectById(Id);
         }

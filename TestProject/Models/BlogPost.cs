@@ -17,7 +17,9 @@ namespace TestProject.Models
     }
 
     public class BlogPostDbContext : DbContext
-    { 
+    {
+        public BlogPostDbContext() : base("Name=BlogPostDbContext") { }
+
         public virtual DbSet<BlogPost> BlogPosts { get; set; }
     }
 }

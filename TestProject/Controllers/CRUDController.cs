@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using TestProject.Models;
@@ -23,12 +24,16 @@ namespace TestProject.Controllers
             return View(_BlogPostService.SelectAll());
         }
 
-        public ActionResult Details(int id)
+        public ActionResult Details(int? id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             BlogPost blogPost = _BlogPostService.GetById(id);
             if (blogPost == null)
             {
-                return new HttpStatusCodeResult(404);
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
             return View(blogPost);
         }
@@ -50,12 +55,16 @@ namespace TestProject.Controllers
             return View("Create", obj);
         }
 
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int? id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             BlogPost blogPost = _BlogPostService.GetById(id);
             if (blogPost == null)
             {
-                return new HttpStatusCodeResult(404);
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
             return View(blogPost);
         }
@@ -72,12 +81,16 @@ namespace TestProject.Controllers
             return View("Edit", obj);
         }
 
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int? id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             BlogPost blogPost = _BlogPostService.GetById(id);
             if (blogPost == null)
             {
-                return new HttpStatusCodeResult(404);
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
             return View(blogPost);
         }

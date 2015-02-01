@@ -18,15 +18,9 @@ namespace TestProject.Repository
             _dbset = context.Set<T>();
         }
 
-        public virtual IEnumerable<T> SelectAll()
+        public virtual IEnumerable<T> GetAll()
         {
             return _dbset.AsEnumerable<T>();
-        }
-
-        public IEnumerable<T> SelectById(System.Linq.Expressions.Expression<Func<T, bool>> predicate)
-        {
-            IEnumerable<T> query = _dbset.Where(predicate).AsEnumerable();
-            return query;
         }
 
         public virtual T Create(T entity)

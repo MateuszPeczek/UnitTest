@@ -13,14 +13,14 @@ namespace TestProject.Repository
 
         public BlogRepository(DbContext context) : base(context) { }
 
-        public override IEnumerable<BlogPost> SelectAll()
+        public override IEnumerable<BlogPost> GetAll()
         {
-            return _entities.Set<BlogPost>().Include(x => x.Id).AsEnumerable();
+            return _entities.Set<BlogPost>().ToList();
         }
 
-        public BlogPost SelectById(int id)
+        public BlogPost SelectById(int? id)
         {
-            return _dbset.Include(x => x.Id).Where(x => x.Id == id).FirstOrDefault();
+            return _dbset.Find(id);
         }
     }
 }

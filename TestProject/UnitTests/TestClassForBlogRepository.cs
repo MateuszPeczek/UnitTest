@@ -1,97 +1,97 @@
-﻿using System;
+﻿using FakeItEasy;
+using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Web;
-using Xunit;
-using FakeItEasy;
 using TestProject.Models;
 using TestProject.Repository;
-using System.Data.Entity;
+using Xunit;
 
 namespace TestProject.UnitTests
 {
-    /*public class TestClassForBlogRepository
+    public class TestClassForBlogRepository
     {
-        private BlogRepository fakeRepository = null;
-        private IBlogRepository fakeIRepository = null;
-        private DbSet<BlogPost> fakeDbSet = A.Fake<DbSet<BlogPost>>();
-        private BlogPostDbContext fakeDbContext = A.Fake<BlogPostDbContext>();
+        DbConnection connection;
+        TestContext databaseContext;
+        BlogRepository objRepository;
 
         public TestClassForBlogRepository()
         {
-            fakeIRepository = A.Fake<IBlogRepository>();
-            fakeRepository = new BlogRepository(fakeDbContext);
+            connection = Effort.DbConnectionFactory.CreateTransient();
+            databaseContext = new TestContext(connection);
+            objRepository = new BlogRepository(databaseContext);
         }
 
         [Fact]
-        private void Repository_SelectAll_Test()
+        private void BlogRepository_SelectAll()
         {
-            var data = new List<BlogPost>
-            {
-                new BlogPost {ID = 1, Title="Title1", Content="Content1"},
-                new BlogPost {ID = 2, Title="Title2", Content="Content2"},
-                new BlogPost {ID = 2, Title="Title3", Content="Content3"}
-            }.AsQueryable<BlogPost>();
+            var result = objRepository.GetAll().ToList();
 
-            var fakeDbSet = A.Fake<DbSet<BlogPost>>();
-
-            A.Fake<DbSet<BlogPost>>(builder => builder.Implements(typeof(IQueryable<BlogPost>)));
-
-            A.CallTo(() => ((IQueryable<BlogPost>)fakeDbSet).Provider).Returns(data.Provider);
-            A.CallTo(() => ((IQueryable<BlogPost>)fakeDbSet).Expression).Returns(data.Expression);
-            A.CallTo(() => ((IQueryable<BlogPost>)fakeDbSet).ElementType).Returns(data.ElementType);
-            A.CallTo(() => ((IQueryable<BlogPost>)fakeDbSet).GetEnumerator()).Returns(data.GetEnumerator());
-
-            var fakeDbContext = A.Fake<BlogPostDbContext>();
-            A.CallTo(() => fakeDbContext.BlogPosts).Returns(fakeDbSet);
-
-            fakeRepository = new BlogRepository(fakeDbContext);
-            var listBlog = fakeRepository.SelectAll();
-
+            Assert.NotNull(result);
+            Assert.Equal(3, result.Count);
+            Assert.Equal("Title1", result[0].Title);
+            Assert.Equal("Title2", result[1].Title);
+            Assert.Equal("Title3", result[2].Title);
         }
 
         [Fact]
-        private void Repository_Create_Test()
+        private void BlogRepository_SelectById()
         {
-            fakeRepository.Create(A<BlogPost>._);
+            var result = objRepository.SelectById(1);
 
-            A.CallTo(() => fakeDbContext.BlogPosts.Add(A<BlogPost>._)).MustHaveHappened(Repeated.Exactly.Once);
+            Assert.NotNull(result);
+            Assert.Equal(1, result.Id);
+            Assert.Equal("Title1", result.Title);
+            Assert.Equal("Content1", result.Content);
         }
 
         [Fact]
-        private void Repository_SelectByID_Test()
+        public void BlogRepository_Create()
         {
-            fakeRepository.SelectByID(A<int>._);
+            var blogPost = new BlogPost { Title = "Title", Content = "Content" };
 
-            A.CallTo(() => fakeDbContext.BlogPosts.Find(A<int>._)).MustHaveHappened(Repeated.Exactly.Once);
+            var result = objRepository.Create(blogPost);
+            databaseContext.SaveChanges();
+
+            var lst = objRepository.GetAll().ToList();
+
+            Assert.Equal(4, lst.Count);
+            Assert.Equal(blogPost.Title, lst.Last().Title);
+            Assert.Equal(blogPost.Content, lst.Last().Content);
         }
 
         [Fact]
-        private void Repository_Update_Test()
+        public void BlogRepository_Update()
         {
-            var blogEntry = new BlogPost() { ID = 1, Content = "Content", Title = "Title" };
-            fakeRepository.Update(blogEntry);
+            var blogPost = new BlogPost {Id=1, Title = "Title1Edited", Content = "Content1Edited" };
 
-            Assert.Equal(fakeDbContext.Entry(blogEntry).State, System.Data.Entity.EntityState.Modified);
+            objRepository.Update(blogPost);
+
+            Assert.Equal(databaseContext.Entry(blogPost).State, System.Data.Entity.EntityState.Modified);
+
+            databaseContext.SaveChanges();
+
+            var lst = objRepository.GetAll().ToList();
+
+            Assert.Equal(1, lst[0].Id);
+            Assert.Equal("Title1Edited", lst[0].Title);
+            Assert.Equal("Content1Edited", lst[0].Content);
         }
 
         [Fact]
-        private void Repository_Delete_Test()
+        public void BlogRepository_Delete()
         {
-            var blogEntry = new BlogPost() { ID = 1, Content = "Content", Title = "Title" };
-            fakeRepository.Delete(1);
+            var blogPost = new TestProject.Models.BlogPost {Title = "Title1", Content = "Content1" };
 
-            A.CallTo(() => fakeDbContext.BlogPosts.Find(1)).Returns(new BlogPost() { ID = 1, Content = "Content", Title = "Title" });
+            var toDelete = objRepository.SelectById(1);
+            var result = objRepository.Delete(toDelete);
+            databaseContext.SaveChanges();
 
-            A.CallTo(() => fakeDbContext.BlogPosts.Remove(blogEntry)).MustHaveHappened(Repeated.Exactly.Once);
+            var lst = objRepository.GetAll().ToList();
 
+            Assert.Equal(2, lst.Count);
+            Assert.DoesNotContain(blogPost, lst);
         }
-
-        [Fact]
-        private void Repository_Save_Test()
-        {
-            fakeRepository.Save();
-            A.CallTo(() => fakeDbContext.SaveChanges()).MustHaveHappened(Repeated.Exactly.Once);
-        }
-    }*/
+    }
 }

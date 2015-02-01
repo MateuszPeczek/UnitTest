@@ -9,6 +9,6 @@ namespace TestProject.Repository
 {
     public interface IBlogRepository : IGenericRepository<BlogPost>
     {
-        BlogPost SelectById(int id);
+        BlogPost SelectById(int? id);
     }
 }

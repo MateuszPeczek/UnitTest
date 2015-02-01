@@ -10,8 +10,7 @@ namespace TestProject.Repository
 {
     public interface IGenericRepository<T> where T : BaseEntity
     {
-        IEnumerable<T> SelectAll();
-        IEnumerable<T> SelectById(Expression<Func<T, bool>> predicate);
+        IEnumerable<T> GetAll();
         T Create(T entity);
         T Delete(T entity);
         void Update(T entity);
