@@ -7,10 +7,8 @@ using System.Web;
 
 namespace TestProject.Models
 {
-    public class BlogPost
+    public class BlogPost : Entity<int>
     {
-        public int ID { get; set; }
-
         [Required]
         public string Title { get; set; }
 
@@ -20,6 +18,8 @@ namespace TestProject.Models
 
     public class BlogPostDbContext : DbContext
     {
+        public BlogPostDbContext() : base("Name=BlogPostDbContext") { }
+
         public virtual DbSet<BlogPost> BlogPosts { get; set; }
     }
 }

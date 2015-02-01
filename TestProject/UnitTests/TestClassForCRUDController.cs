@@ -8,18 +8,26 @@ using TestProject.Repository;
 using TestProject.Controllers;
 using TestProject.Models;
 using System.Web.Mvc;
+using TestProject.ServiceLayer;
 
 namespace TestProject.UnitTests
 {
     public class TestClassForCRUDController
     {
         private CRUDController testController;
-        private IBlogRepository fakeBlogList;
+        IBlogPostService fakeBlogService = A.Fake<IBlogPostService>();
+        private List<BlogPost> listBlogs;
 
         public TestClassForCRUDController()
         {
-            fakeBlogList = A.Fake<IBlogRepository>();
-            testController = new CRUDController(fakeBlogList);
+            testController = new CRUDController(fakeBlogService);
+            listBlogs = new List<BlogPost>()
+            {
+                new BlogPost {Id = 1, Title="Title1", Content="Content1"},
+                new BlogPost {Id = 2, Title="Title2", Content="Content2"},
+                new BlogPost {Id = 3, Title="Title3", Content="Content3"},
+                new BlogPost {Id = 4, Title="Title4", Content="Content4"},
+            };
         }
 
         #region Tests for Default
@@ -27,19 +35,14 @@ namespace TestProject.UnitTests
         [Fact]
         private void CRUD_Index_Returns_List_Of_Entries()
         { 
-            A.CallTo(() => fakeBlogList.SelectAll()).Returns(new List<BlogPost>{
-                    new BlogPost {ID=1, Content="Test1", Title="Title1"},
-                    new BlogPost {ID=2, Content="Test1", Title="Title2"},
-                    new BlogPost {ID=3, Content="Test1", Title="Title3"},
-                    new BlogPost {ID=4, Content="Test1", Title="Title4"},
-            });
+            A.CallTo(() => fakeBlogService.SelectAll()).Returns(listBlogs);
 
             var viewResult = testController.Index() as ViewResult;
             var fakePosts = viewResult.ViewData.Model as List<BlogPost>;
 
             Assert.NotNull(viewResult);
-            Assert.Equal(1, fakePosts[0].ID);
-            Assert.Equal("Test1", fakePosts[0].Content);
+            Assert.Equal(1, fakePosts[0].Id);
+            Assert.Equal("Content1", fakePosts[0].Content);
             Assert.Equal("Title1", fakePosts[0].Title);
             Assert.Equal(4, fakePosts.Count);
         }
@@ -47,7 +50,7 @@ namespace TestProject.UnitTests
         #endregion
 
         #region Tests for Retrieve Action
-
+        
         [Fact]
         private void CRUD_Details_Returns_400_Id_Null()
         {
@@ -60,7 +63,7 @@ namespace TestProject.UnitTests
         [Fact]
         private void CRUD_Details_Returns_404_ID_Not_Found()
         {
-            A.CallTo(() => fakeBlogList.SelectByID(1)).Returns<BlogPost>(null);
+            A.CallTo(() => fakeBlogService.GetById(1)).Returns<BlogPost>(null);
 
             var fakeHttpCodeResult = testController.Details(1) as HttpStatusCodeResult;
 
@@ -71,16 +74,15 @@ namespace TestProject.UnitTests
         [Fact]
         private void CRUD_Details_Returns_Details_Proper_ID()
         {
-            A.CallTo(() => fakeBlogList.SelectByID(1)).Returns(
-                new BlogPost { ID = 1, Content = "TestContent", Title = "TestTitle" });
+            A.CallTo(() => fakeBlogService.GetById(1)).Returns(listBlogs[0]);
 
             var viewResult = testController.Details(1) as ViewResult;
             var fakeBlog = viewResult.ViewData.Model as BlogPost;
 
             Assert.NotNull(viewResult);
-            Assert.Equal(1, fakeBlog.ID);
-            Assert.Equal("TestContent", fakeBlog.Content);
-            Assert.Equal("TestTitle", fakeBlog.Title);
+            Assert.Equal(listBlogs[0].Id, fakeBlog.Id);
+            Assert.Equal(listBlogs[0].Content, fakeBlog.Content);
+            Assert.Equal(listBlogs[0].Title, fakeBlog.Title);
         }
 
         #endregion
@@ -99,15 +101,14 @@ namespace TestProject.UnitTests
         [Fact]
         private void CRUD_Create_HTTPPost_Error_Incorrect_Entry()
         {
-            A.CallTo(() => fakeBlogList.Create(A<BlogPost>._));
-            var errPost = new BlogPost() { ID = 1 };
+            var blogPost = new BlogPost {Id = 1};
 
-            A.CallTo(() => fakeBlogList.Create(errPost)).MustNotHaveHappened();
-            A.CallTo(() => fakeBlogList.Save()).MustNotHaveHappened();
+            testController.ModelState.AddModelError("Error", "Title required");
+            testController.ModelState.AddModelError("Error", "Content required");
 
-            testController.ModelState.AddModelError("Error", "Pole Title jest wymagane.");
+            var viewResult = testController.Create(blogPost) as ViewResult;
 
-            var viewResult = testController.Create(errPost) as ViewResult;
+            A.CallTo(() => fakeBlogService.Create(blogPost)).MustNotHaveHappened();
 
             Assert.NotNull(viewResult);
             Assert.Equal("Create", viewResult.ViewName);
@@ -116,14 +117,11 @@ namespace TestProject.UnitTests
         [Fact]
         private void CRUD_Create_HTTPPost_Correct_Entry()
         {
-            A.CallTo(() => fakeBlogList.Create(A<BlogPost>._));
-            var correctPost = new BlogPost() { ID = 1, Content = "Content", Title = "Title" };
+            var blogPost = new BlogPost {Id=1, Content="Content1", Title="Title1"};
 
-            A.CallTo(() => fakeBlogList.Create(correctPost)).MustNotHaveHappened();
-            A.CallTo(() => fakeBlogList.Save()).MustNotHaveHappened();
+            var viewResult = testController.Create(blogPost) as RedirectToRouteResult;
 
-            var viewResult = testController.Create(correctPost) as RedirectToRouteResult;
-
+            A.CallTo(() => fakeBlogService.Create(blogPost)).MustHaveHappened(Repeated.Exactly.Once);
             Assert.NotNull(viewResult);
             Assert.Equal("Index", viewResult.RouteValues["action"]);
         }
@@ -144,13 +142,14 @@ namespace TestProject.UnitTests
         [Fact]
         private void CRUD_HttpPostEdit_HTTPPost_Error_Incorrect_Entry()
         {
+            var blogPost = new BlogPost { Id = 1 };
 
-            A.CallTo(() => fakeBlogList.Update(null)).MustNotHaveHappened();
-            A.CallTo(() => fakeBlogList.Save()).MustNotHaveHappened();
+            testController.ModelState.AddModelError("Error", "Title required");
+            testController.ModelState.AddModelError("Error", "Content required");
 
-            testController.ModelState.AddModelError("Error", "Pole Title jest wymagane.");
+            var viewResult = testController.HttpPostEdit(blogPost) as ViewResult;
 
-            var viewResult = testController.HttpPostEdit(null) as ViewResult;
+            A.CallTo(() => fakeBlogService.Update(blogPost)).MustNotHaveHappened();
 
             Assert.NotNull(viewResult);
             Assert.Equal("Edit", viewResult.ViewName);
@@ -159,13 +158,11 @@ namespace TestProject.UnitTests
         [Fact]
         private void CRUD_HttpPostEdit_HTTPPost_Correct_Entry()
         {
-            A.CallTo(() => fakeBlogList.Update(A<BlogPost>._));
-            var correctEdit = new BlogPost() { ID = 1, Content = "Content", Title = "Title" };
+            var blogPost = new BlogPost() { Id = 1, Content = "Content", Title = "Title" };
 
-            A.CallTo(() => fakeBlogList.Create(correctEdit)).MustNotHaveHappened();
-            A.CallTo(() => fakeBlogList.Save()).MustNotHaveHappened();
+            var viewResult = testController.HttpPostEdit(blogPost) as RedirectToRouteResult;
 
-            var viewResult = testController.HttpPostEdit(correctEdit) as RedirectToRouteResult;
+            A.CallTo(() => fakeBlogService.Update(blogPost)).MustHaveHappened(Repeated.Exactly.Once);
 
             Assert.NotNull(viewResult);
             Assert.Equal("Index", viewResult.RouteValues["action"]);
@@ -185,9 +182,9 @@ namespace TestProject.UnitTests
         }
 
         [Fact]
-        private void CRUD_Delete_Returns_404_ID_Not_Found()
+        private void CRUD_Delete_HTTPGET_Returns_404_ID_Not_Found()
         {
-            A.CallTo(() => fakeBlogList.SelectByID(1)).Returns<BlogPost>(null);
+            A.CallTo(() => fakeBlogService.GetById(1)).Returns<BlogPost>(null);
 
             var fakeHttpCodeResult = testController.Delete(1) as HttpStatusCodeResult;
 
@@ -196,20 +193,35 @@ namespace TestProject.UnitTests
         }
 
         [Fact]
-        private void CRUD_Delete_Proper_ID()
+        private void CRUD_HTTPGet_Delete_Proper_ID()
         {
-            A.CallTo(() => fakeBlogList.SelectByID(1)).Returns(
-            new BlogPost { ID = 1, Content = "TestContent", Title = "TestTitle" });
+            A.CallTo(() => fakeBlogService.GetById(1)).Returns(listBlogs[0]);
 
-            A.CallTo(() => fakeBlogList.Delete(1)).MustNotHaveHappened();
-            A.CallTo(() => fakeBlogList.Save()).MustNotHaveHappened();
+            var viewResult = testController.Delete(1) as ViewResult;
+            var fakeBlog = viewResult.ViewData.Model as BlogPost;
 
-            var viewResult = testController.ConfirmDelete(1) as RedirectToRouteResult;
+            Assert.NotNull(viewResult);
+            Assert.Equal(listBlogs[0].Id, fakeBlog.Id);
+            Assert.Equal(listBlogs[0].Content, fakeBlog.Content);
+            Assert.Equal(listBlogs[0].Title, fakeBlog.Title);
+        }
+
+        [Fact]
+        private void CRUD_HTTPPost_ConfirmDelete_Proper_ID()
+        {
+            A.CallTo(() => fakeBlogService.GetById(1)).Returns(listBlogs[0]);
+            
+            var blogPost = listBlogs[0];
+            var data = new System.Web.Mvc.FormCollection();
+            
+            var viewResult = testController.ConfirmDelete(1, data)  as RedirectToRouteResult;
+
+            A.CallTo(() => fakeBlogService.Delete(blogPost)).MustHaveHappened(Repeated.Exactly.Once);
 
             Assert.NotNull(viewResult);
             Assert.Equal("Index", viewResult.RouteValues["action"]);
         }
-
-        #endregion
+        
+        #endregion 
     }
 }

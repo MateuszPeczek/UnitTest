@@ -70,8 +70,61 @@ C:\Users\Mateusz\Documents\Visual Studio 2013\Projects\GitRepos\UnitTest\TestPro
 C:\Users\Mateusz\Documents\Visual Studio 2013\Projects\GitRepos\UnitTest\TestProject\bin\System.Web.Webpages.Razor.xml
 C:\Users\Mateusz\Documents\Visual Studio 2013\Projects\GitRepos\UnitTest\TestProject\bin\System.Web.Helpers.xml
 C:\Users\Mateusz\Documents\Visual Studio 2013\Projects\GitRepos\UnitTest\TestProject\bin\System.Web.Mvc.xml
-C:\Users\Mateusz\Documents\Visual Studio 2013\Projects\GitRepos\UnitTest\TestProject\obj\Debug\TestProject.csprojResolveAssemblyReference.cache
-C:\Users\Mateusz\Documents\Visual Studio 2013\Projects\GitRepos\UnitTest\TestProject\obj\Debug\TestProject.Migrations.BlogMigration.resources
-C:\Users\Mateusz\Documents\Visual Studio 2013\Projects\GitRepos\UnitTest\TestProject\obj\Debug\TestProject.csproj.GenerateResource.Cache
 C:\Users\Mateusz\Documents\Visual Studio 2013\Projects\GitRepos\UnitTest\TestProject\obj\Debug\TestProject.dll
 C:\Users\Mateusz\Documents\Visual Studio 2013\Projects\GitRepos\UnitTest\TestProject\obj\Debug\TestProject.pdb
+C:\Users\Mateusz\Documents\Visual Studio 2013\Projects\GitRepos\UnitTest\TestProject\bin\Effort.dll
+C:\Users\Mateusz\Documents\Visual Studio 2013\Projects\GitRepos\UnitTest\TestProject\bin\NMemory.dll
+C:\Users\Mateusz\Documents\Visual Studio 2013\Projects\GitRepos\UnitTest\TestProject\bin\Effort.xml
+C:\Users\Mateusz\Documents\Visual Studio 2013\Projects\GitRepos\UnitTest\TestProject\bin\NMemory.xml
+C:\Users\Mateusz\Documents\Visual Studio 2013\Projects\GitRepos\UnitTest\TestProject\bin\Autofac.dll
+C:\Users\Mateusz\Documents\Visual Studio 2013\Projects\GitRepos\UnitTest\TestProject\bin\Autofac.Integration.Mvc.dll
+C:\Users\Mateusz\Documents\Visual Studio 2013\Projects\GitRepos\UnitTest\TestProject\bin\Autofac.xml
+C:\Users\Mateusz\Documents\Visual Studio 2013\Projects\GitRepos\UnitTest\TestProject\bin\Autofac.Integration.Mvc.xml
+C:\Users\Mateusz\Documents\Visual Studio 2013\Projects\GitRepos\UnitTest\TestProject\obj\Debug\TestProject.Migrations.Initial.resources
+C:\Users\Mateusz\Documents\Visual Studio 2013\Projects\GitRepos\UnitTest\TestProject\obj\Debug\TestProject.csproj.GenerateResource.Cache
+C:\UnitTest\UnitTest\TestProject\bin\xunit.abstractions.dll
+C:\UnitTest\UnitTest\TestProject\bin\xunit.runner.visualstudio.testadapter.dll
+C:\UnitTest\UnitTest\TestProject\bin\xunit.runner.utility.desktop.dll
+C:\UnitTest\UnitTest\TestProject\bin\xunit.execution.desktop.dll
+C:\UnitTest\UnitTest\TestProject\bin\TestProject.dll.config
+C:\UnitTest\UnitTest\TestProject\bin\TestProject.dll
+C:\UnitTest\UnitTest\TestProject\bin\TestProject.pdb
+C:\UnitTest\UnitTest\TestProject\bin\Antlr3.Runtime.dll
+C:\UnitTest\UnitTest\TestProject\bin\Autofac.dll
+C:\UnitTest\UnitTest\TestProject\bin\Autofac.Integration.Mvc.dll
+C:\UnitTest\UnitTest\TestProject\bin\Effort.dll
+C:\UnitTest\UnitTest\TestProject\bin\EntityFramework.dll
+C:\UnitTest\UnitTest\TestProject\bin\EntityFramework.SqlServer.dll
+C:\UnitTest\UnitTest\TestProject\bin\FakeItEasy.dll
+C:\UnitTest\UnitTest\TestProject\bin\NMemory.dll
+C:\UnitTest\UnitTest\TestProject\bin\System.Web.Helpers.dll
+C:\UnitTest\UnitTest\TestProject\bin\System.Web.Mvc.dll
+C:\UnitTest\UnitTest\TestProject\bin\System.Web.Razor.dll
+C:\UnitTest\UnitTest\TestProject\bin\System.Web.Webpages.Deployment.dll
+C:\UnitTest\UnitTest\TestProject\bin\System.Web.Webpages.dll
+C:\UnitTest\UnitTest\TestProject\bin\System.Web.Webpages.Razor.dll
+C:\UnitTest\UnitTest\TestProject\bin\WebGrease.dll
+C:\UnitTest\UnitTest\TestProject\bin\xunit.assert.dll
+C:\UnitTest\UnitTest\TestProject\bin\xunit.core.dll
+C:\UnitTest\UnitTest\TestProject\bin\Antlr3.Runtime.pdb
+C:\UnitTest\UnitTest\TestProject\bin\Autofac.xml
+C:\UnitTest\UnitTest\TestProject\bin\Autofac.Integration.Mvc.xml
+C:\UnitTest\UnitTest\TestProject\bin\Effort.xml
+C:\UnitTest\UnitTest\TestProject\bin\EntityFramework.xml
+C:\UnitTest\UnitTest\TestProject\bin\EntityFramework.SqlServer.xml
+C:\UnitTest\UnitTest\TestProject\bin\FakeItEasy.xml
+C:\UnitTest\UnitTest\TestProject\bin\NMemory.xml
+C:\UnitTest\UnitTest\TestProject\bin\xunit.assert.pdb
+C:\UnitTest\UnitTest\TestProject\bin\xunit.assert.xml
+C:\UnitTest\UnitTest\TestProject\bin\xunit.core.pdb
+C:\UnitTest\UnitTest\TestProject\bin\xunit.core.xml
+C:\UnitTest\UnitTest\TestProject\bin\System.Web.Razor.xml
+C:\UnitTest\UnitTest\TestProject\bin\System.Web.Webpages.xml
+C:\UnitTest\UnitTest\TestProject\bin\System.Web.Webpages.Deployment.xml
+C:\UnitTest\UnitTest\TestProject\bin\System.Web.Webpages.Razor.xml
+C:\UnitTest\UnitTest\TestProject\bin\System.Web.Helpers.xml
+C:\UnitTest\UnitTest\TestProject\bin\System.Web.Mvc.xml
+C:\UnitTest\UnitTest\TestProject\obj\Debug\TestProject.Migrations.Initial.resources
+C:\UnitTest\UnitTest\TestProject\obj\Debug\TestProject.csproj.GenerateResource.Cache
+C:\UnitTest\UnitTest\TestProject\obj\Debug\TestProject.dll
+C:\UnitTest\UnitTest\TestProject\obj\Debug\TestProject.pdb

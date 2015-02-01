@@ -3,7 +3,7 @@ namespace TestProject.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class BlogMigration : DbMigration
+    public partial class Initial : DbMigration
     {
         public override void Up()
         {
@@ -11,11 +11,11 @@ namespace TestProject.Migrations
                 "dbo.BlogPosts",
                 c => new
                     {
-                        ID = c.Int(nullable: false, identity: true),
-                        Title = c.String(),
-                        Content = c.String(),
+                        Id = c.Int(nullable: false, identity: true),
+                        Title = c.String(nullable: false),
+                        Content = c.String(nullable: false),
                     })
-                .PrimaryKey(t => t.ID);
+                .PrimaryKey(t => t.Id);
             
         }
         
