@@ -10,13 +10,12 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Index</title>
-    <link href="~/Content/themes/default/bootstrap.css" rel="stylesheet">
 </head>
 <body>
-    <p class="text-primary">
+    <p>
         @Html.ActionLink("Create New", "Create")
     </p>
-    <table class="table-responsive">
+    <table class="table">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Title)
@@ -36,9 +35,9 @@
                 @Html.DisplayFor(modelItem => item.Content)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-                @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.Id })
             </td>
         </tr>
     }

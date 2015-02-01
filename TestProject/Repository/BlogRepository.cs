@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -7,49 +8,19 @@ using TestProject.Models;
 
 namespace TestProject.Repository
 {
-    public class BlogRepository : IBlogRepository
+    public class BlogRepository : GenericRepository<BlogPost>, IBlogRepository
     {
-        private BlogPostDbContext _db = null;
 
-        public BlogRepository()
+        public BlogRepository(DbContext context) : base(context) { }
+
+        public override IEnumerable<BlogPost> SelectAll()
         {
-            _db = new BlogPostDbContext();
+            return _entities.Set<BlogPost>().Include(x => x.Id).AsEnumerable();
         }
 
-        public BlogRepository(BlogPostDbContext db)
+        public BlogPost SelectById(int id)
         {
-            _db = db;
-        }
-
-        public IEnumerable<BlogPost> SelectAll()
-        {
-            return _db.BlogPosts.ToList();
-        }
-
-        public BlogPost SelectByID(int? id)
-        {
-            return _db.BlogPosts.Find(id);
-        }
-
-        public void Create(BlogPost obj)
-        {
-            _db.BlogPosts.Add(obj);
-        }
-
-        public void Update(BlogPost obj)
-        {
-            _db.Entry(obj).State = System.Data.Entity.EntityState.Modified;
-        }
-
-        public void Delete(int? id)
-        {
-            BlogPost existing = _db.BlogPosts.Find(id);
-            _db.BlogPosts.Remove(existing);
-        }
-
-        public void Save()
-        {
-            _db.SaveChanges();
+            return _dbset.Include(x => x.Id).Where(x => x.Id == id).FirstOrDefault();
         }
     }
 }

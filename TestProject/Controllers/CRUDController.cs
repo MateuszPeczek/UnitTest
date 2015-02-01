@@ -5,38 +5,32 @@ using System.Web;
 using System.Web.Mvc;
 using TestProject.Models;
 using TestProject.Repository;
+using TestProject.ServiceLayer;
 
 namespace TestProject.Controllers
 {
     public class CRUDController : Controller
     {
-        private IBlogRepository _repository = null;
-        public CRUDController()
+        IBlogPostService _BlogPostService;
+
+        public CRUDController(IBlogPostService BlogPostService)
         {
-            _repository = new BlogRepository();
-        }
-        public CRUDController(IBlogRepository repository)
-        {
-            _repository = repository;
+            _BlogPostService = BlogPostService;
         }
 
         public ActionResult Index()
         {
-            return View(_repository.SelectAll().ToList());
+            return View(_BlogPostService.SelectAll());
         }
 
-        public ActionResult Details(int? id)
+        public ActionResult Details(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(400);
-            }
-            BlogPost existing = _repository.SelectByID(id);
-            if (existing == null)
+            BlogPost blogPost = _BlogPostService.GetById(id);
+            if (blogPost == null)
             {
                 return new HttpStatusCodeResult(404);
             }
-            return View(existing);
+            return View(blogPost);
         }
 
         public ActionResult Create()
@@ -50,25 +44,20 @@ namespace TestProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                _repository.Create(obj);
-                _repository.Save();
+                _BlogPostService.Create(obj);
                 return RedirectToAction("Index");
             }
             return View("Create", obj);
         }
 
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(400);
-            }
-            BlogPost existing = _repository.SelectByID(id);
-            if (existing == null)
+            BlogPost blogPost = _BlogPostService.GetById(id);
+            if (blogPost == null)
             {
                 return new HttpStatusCodeResult(404);
             }
-            return View(existing);
+            return View(blogPost);
         }
 
         [HttpPost, ActionName("Edit")]
@@ -77,38 +66,29 @@ namespace TestProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                _repository.Update(obj);
-                _repository.Save();
+                _BlogPostService.Update(obj);
                 return RedirectToAction("Index");
             }
             return View("Edit", obj);
         }
 
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(400);
-            }
-            BlogPost existing = _repository.SelectByID(id);
-            if (existing == null)
+            BlogPost blogPost = _BlogPostService.GetById(id);
+            if (blogPost == null)
             {
                 return new HttpStatusCodeResult(404);
             }
-            return View(existing);
+            return View(blogPost);
         }
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult ConfirmDelete(int? id)
+        public ActionResult ConfirmDelete(int id, FormCollection data)
         {
-            if (ModelState.IsValid)
-            {
-                _repository.Delete(id);
-                _repository.Save();
-                return RedirectToAction("Index");
-            }
-            return View("Delete", id);
+            BlogPost blogPost = _BlogPostService.GetById(id);
+            _BlogPostService.Delete(blogPost);
+            return RedirectToAction("Index");
         }
     }
 }

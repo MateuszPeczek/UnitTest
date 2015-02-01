@@ -10,16 +10,16 @@ using System.Data.Entity;
 
 namespace TestProject.UnitTests
 {
-    public class TestClassForBlogRepository
+    /*public class TestClassForBlogRepository
     {
         private BlogRepository fakeRepository = null;
-        private IBlogRepository fakeBlogList = null;
+        private IBlogRepository fakeIRepository = null;
         private DbSet<BlogPost> fakeDbSet = A.Fake<DbSet<BlogPost>>();
         private BlogPostDbContext fakeDbContext = A.Fake<BlogPostDbContext>();
 
         public TestClassForBlogRepository()
         {
-            fakeBlogList = A.Fake<IBlogRepository>();
+            fakeIRepository = A.Fake<IBlogRepository>();
             fakeRepository = new BlogRepository(fakeDbContext);
         }
 
@@ -31,15 +31,15 @@ namespace TestProject.UnitTests
                 new BlogPost {ID = 1, Title="Title1", Content="Content1"},
                 new BlogPost {ID = 2, Title="Title2", Content="Content2"},
                 new BlogPost {ID = 2, Title="Title3", Content="Content3"}
-            }.AsEnumerable();
+            }.AsQueryable<BlogPost>();
 
             var fakeDbSet = A.Fake<DbSet<BlogPost>>();
 
-            
+            A.Fake<DbSet<BlogPost>>(builder => builder.Implements(typeof(IQueryable<BlogPost>)));
 
-            //A.CallTo(() => ((IQueryable<BlogPost>)fakeDbSet).Provider).Returns(data.Provider);
-            //A.CallTo(() => ((IQueryable<BlogPost>)fakeDbSet).Expression).Returns(data.Expression);
-            //A.CallTo(() => ((IQueryable<BlogPost>)fakeDbSet).ElementType).Returns(data.ElementType);
+            A.CallTo(() => ((IQueryable<BlogPost>)fakeDbSet).Provider).Returns(data.Provider);
+            A.CallTo(() => ((IQueryable<BlogPost>)fakeDbSet).Expression).Returns(data.Expression);
+            A.CallTo(() => ((IQueryable<BlogPost>)fakeDbSet).ElementType).Returns(data.ElementType);
             A.CallTo(() => ((IQueryable<BlogPost>)fakeDbSet).GetEnumerator()).Returns(data.GetEnumerator());
 
             var fakeDbContext = A.Fake<BlogPostDbContext>();
@@ -48,28 +48,50 @@ namespace TestProject.UnitTests
             fakeRepository = new BlogRepository(fakeDbContext);
             var listBlog = fakeRepository.SelectAll();
 
-            //Assert.Equal("Title1", listBlog);
-
         }
 
         [Fact]
         private void Repository_Create_Test()
         {
-            A.CallTo(() => fakeDbContext.BlogPosts).Returns(fakeDbSet);
-            var post = new BlogPost() {ID = 1, Title="Title", Content="Content"};
-            fakeRepository.Create(post);
+            fakeRepository.Create(A<BlogPost>._);
 
-            A.CallTo(() => fakeDbContext.BlogPosts.Add(post)).MustHaveHappened(Repeated.Exactly.Once);
+            A.CallTo(() => fakeDbContext.BlogPosts.Add(A<BlogPost>._)).MustHaveHappened(Repeated.Exactly.Once);
         }
 
         [Fact]
         private void Repository_SelectByID_Test()
         {
-            var expectedResult = new BlogPost() { ID = 1, Title = "Title", Content = "Content" };
-            fakeRepository.Create(expectedResult);
-            var result = fakeRepository.SelectByID(1);
+            fakeRepository.SelectByID(A<int>._);
 
-            A.CallTo(() => fakeDbContext.BlogPosts.Find(1)).MustHaveHappened(Repeated.Exactly.Once);
+            A.CallTo(() => fakeDbContext.BlogPosts.Find(A<int>._)).MustHaveHappened(Repeated.Exactly.Once);
         }
-    }
+
+        [Fact]
+        private void Repository_Update_Test()
+        {
+            var blogEntry = new BlogPost() { ID = 1, Content = "Content", Title = "Title" };
+            fakeRepository.Update(blogEntry);
+
+            Assert.Equal(fakeDbContext.Entry(blogEntry).State, System.Data.Entity.EntityState.Modified);
+        }
+
+        [Fact]
+        private void Repository_Delete_Test()
+        {
+            var blogEntry = new BlogPost() { ID = 1, Content = "Content", Title = "Title" };
+            fakeRepository.Delete(1);
+
+            A.CallTo(() => fakeDbContext.BlogPosts.Find(1)).Returns(new BlogPost() { ID = 1, Content = "Content", Title = "Title" });
+
+            A.CallTo(() => fakeDbContext.BlogPosts.Remove(blogEntry)).MustHaveHappened(Repeated.Exactly.Once);
+
+        }
+
+        [Fact]
+        private void Repository_Save_Test()
+        {
+            fakeRepository.Save();
+            A.CallTo(() => fakeDbContext.SaveChanges()).MustHaveHappened(Repeated.Exactly.Once);
+        }
+    }*/
 }
